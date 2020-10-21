@@ -45,6 +45,12 @@ function handleSubmit(e) {
   render();
 }
 
+function removeBook(e) {
+  const index = e.target.parentNode.dataset.index;
+  myLibrary.splice(index, 1);
+  render();
+}
+
 function toggleFormVisibility() {
   const form = document.querySelector('form');
   form.classList.toggle('visible');
@@ -54,11 +60,18 @@ function render() {
   const ul = document.querySelector('ul');
   ul.textContent = ''; // QUICK AND UGLY WAY TO CLEAR FORM
 
-  myLibrary.forEach((book) => {
+  myLibrary.forEach((book, i) => {
     const li = document.createElement('li');
+    const button = document.createElement('button');
+
+    button.textContent = 'Delete';
+    button.addEventListener('click', removeBook);
+
+    li.setAttribute('data-index', i);
     li.textContent = `${book.title} by ${book.author}, ${book.pages} pages, ${
       book.read ? 'have read' : 'have not read'
     }.`;
+    li.appendChild(button);
     ul.appendChild(li);
   });
 }
